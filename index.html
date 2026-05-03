@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Mapa de Redistribuição do Peso · Método ELO</title>
-<meta name="description" content="Ferramenta interativa da Jornada ELO para transformar sobrecarga em decisão, estrutura e primeira ação concreta." />
+<meta name="description" content="Ferramenta interativa da Jornada ELO." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -20,8 +20,6 @@
   --paper:#fbf7ef;
   --paper-warm:#f4ebde;
   --sand:#e9ddd1;
-  --rose:#b66b58;
-  --sage:#8b8a67;
   --taupe:#7c7068;
   --line:rgba(20,17,15,.11);
   --line-strong:rgba(20,17,15,.20);
@@ -56,10 +54,10 @@ body:before{
   background-size:44px 44px;
   mask-image:linear-gradient(to bottom,#000,transparent 92%);
 }
-button,input,textarea,select{font:inherit}
+button,input,textarea{font:inherit}
 button{cursor:pointer}
 .shell{
-  width:min(1120px,calc(100% - 34px));
+  width:min(1080px,calc(100% - 34px));
   margin:0 auto;
   padding:42px 0 88px;
 }
@@ -70,16 +68,14 @@ button{cursor:pointer}
   align-items:stretch;
   margin-bottom:24px;
 }
-.student-hero .hero-card{
-  min-height:330px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
 .hero-card{
   border:1px solid var(--line);
   border-radius:42px;
   padding:38px;
+  min-height:326px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
   background:rgba(255,250,242,.72);
   backdrop-filter:blur(16px);
   box-shadow:var(--soft);
@@ -93,6 +89,14 @@ button{cursor:pointer}
   height:220px;
   background:radial-gradient(circle,rgba(214,167,95,.25),transparent 62%);
   pointer-events:none;
+}
+.brand-row{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  margin-bottom:28px;
+  position:relative;
+  z-index:1;
 }
 .logo-orb{
   width:86px;
@@ -131,11 +135,12 @@ button{cursor:pointer}
   text-transform:uppercase;
   margin-bottom:8px;
 }
-.brand-row{
-  display:flex;
-  align-items:center;
-  gap:20px;
-  margin-bottom:28px;
+.kicker-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--bronze),var(--gold));
+  box-shadow:0 0 0 6px rgba(166,103,62,.10);
 }
 .brand-note{
   margin:0;
@@ -145,13 +150,6 @@ button{cursor:pointer}
   letter-spacing:.10em;
   text-transform:uppercase;
 }
-.kicker-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:linear-gradient(135deg,var(--bronze),var(--gold));
-  box-shadow:0 0 0 6px rgba(166,103,62,.10);
-}
 h1,h2,h3{
   font-family:"Cormorant Garamond",Georgia,serif;
   font-weight:600;
@@ -159,6 +157,8 @@ h1,h2,h3{
   margin:0;
 }
 h1{
+  position:relative;
+  z-index:1;
   font-size:clamp(48px,7vw,86px);
   line-height:.93;
   max-width:760px;
@@ -170,55 +170,15 @@ h1{
   color:transparent;
 }
 .hero-copy{
-  max-width:720px;
+  position:relative;
+  z-index:1;
+  max-width:690px;
   margin:20px 0 0;
   font-size:17px;
   line-height:1.58;
   color:rgba(20,17,15,.68);
 }
 .hero-copy strong{color:var(--ink)}
-.side-card{
-  border-radius:42px;
-  padding:32px;
-  color:#fff9ef;
-  background:
-    radial-gradient(circle at 82% 10%,rgba(214,167,95,.18),transparent 34%),
-    linear-gradient(145deg,var(--ink),var(--cacao));
-  box-shadow:var(--shadow);
-  position:relative;
-  overflow:hidden;
-}
-.side-card:before{
-  content:"";
-  position:absolute;
-  inset:-40%;
-  background:conic-gradient(from 140deg,transparent,rgba(214,167,95,.18),transparent 28%);
-  animation:orbit 20s linear infinite;
-}
-.side-card > *{position:relative;z-index:1}
-.side-card h2{
-  color:#fff9ef;
-  font-size:clamp(34px,4.2vw,52px);
-  line-height:.98;
-  margin-bottom:16px;
-}
-.side-card p{
-  color:rgba(255,249,239,.72);
-  line-height:1.55;
-  font-size:15px;
-  margin:0;
-}
-.side-card .quote{
-  margin-top:26px;
-  padding:18px;
-  border-radius:22px;
-  background:rgba(255,250,242,.08);
-  border:1px solid rgba(255,249,239,.13);
-  font-family:"Cormorant Garamond",Georgia,serif;
-  font-size:25px;
-  line-height:1.1;
-  color:#fff9ef;
-}
 .progress-wrap{
   border:1px solid var(--line);
   border-radius:999px;
@@ -364,7 +324,7 @@ h1{
   margin:18px 0 24px;
 }
 .quick-btn,
-.choice-btn,
+.dest-card,
 .reason-btn{
   border:1px solid rgba(20,17,15,.12);
   border-radius:18px;
@@ -374,31 +334,31 @@ h1{
   color:var(--ink);
   transition:all .22s ease;
 }
-.quick-btn:hover,.choice-btn:hover,.reason-btn:hover{
+.quick-btn:hover,.dest-card:hover,.reason-btn:hover{
   transform:translateY(-2px);
   border-color:rgba(166,103,62,.38);
   box-shadow:0 12px 24px rgba(20,17,15,.08);
 }
-.quick-btn.on,.choice-btn.on,.reason-btn.on{
+.quick-btn.on,.reason-btn.on{
   background:linear-gradient(145deg,var(--ink),var(--cacao));
   color:#fff9ef;
   border-color:transparent;
   box-shadow:0 16px 34px rgba(20,17,15,.20);
 }
-.quick-btn span,.choice-btn span,.reason-btn span{
+.quick-btn span,.reason-btn span{
   display:block;
   font-size:13px;
   font-weight:800;
   line-height:1.25;
 }
-.quick-btn small,.choice-btn small,.reason-btn small{
+.quick-btn small,.reason-btn small{
   display:block;
   margin-top:5px;
   color:rgba(20,17,15,.52);
   font-size:11px;
   line-height:1.32;
 }
-.quick-btn.on small,.choice-btn.on small,.reason-btn.on small{color:rgba(255,249,239,.68)}
+.quick-btn.on small,.reason-btn.on small{color:rgba(255,249,239,.68)}
 .reason-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0 22px}
 .truth-box{
   margin-top:20px;
@@ -420,13 +380,9 @@ h1{
   margin-top:18px;
 }
 .dest-card{
-  border:1px solid rgba(20,17,15,.12);
   border-radius:26px;
-  background:rgba(255,255,255,.56);
   padding:22px;
-  min-height:180px;
-  text-align:left;
-  transition:all .25s ease;
+  min-height:174px;
   position:relative;
   overflow:hidden;
 }
@@ -438,10 +394,6 @@ h1{
   width:130px;
   height:130px;
   background:radial-gradient(circle,rgba(214,167,95,.18),transparent 66%);
-}
-.dest-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 16px 36px rgba(20,17,15,.11);
 }
 .dest-card.on{
   background:linear-gradient(145deg,var(--ink),var(--cacao));
@@ -577,55 +529,6 @@ h1{
   font-size:13px;
   min-height:18px;
 }
-.dashboard-note{
-  border-radius:24px;
-  padding:18px 20px;
-  margin:18px 0 0;
-  background:rgba(255,255,255,.48);
-  border:1px dashed rgba(166,103,62,.26);
-  color:rgba(20,17,15,.62);
-  font-size:13px;
-  line-height:1.5;
-}
-.dashboard-note strong{color:var(--ink)}
-.dashboard-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-top:16px;
-}
-.dash-tile{
-  border-radius:18px;
-  padding:14px;
-  background:rgba(255,255,255,.52);
-  border:1px solid rgba(20,17,15,.08);
-}
-.dash-tile .dash-label{
-  font-size:9px;
-  font-weight:900;
-  letter-spacing:.16em;
-  color:var(--bronze-deep);
-  text-transform:uppercase;
-  margin-bottom:5px;
-}
-.dash-tile .dash-value{
-  font-size:13px;
-  color:rgba(20,17,15,.75);
-  line-height:1.35;
-}
-.risk-pill{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  padding:7px 10px;
-  border-radius:999px;
-  background:rgba(166,103,62,.10);
-  color:var(--bronze-deep);
-  font-size:11px;
-  font-weight:900;
-  letter-spacing:.10em;
-  text-transform:uppercase;
-}
 .nav-actions{
   display:flex;
   gap:10px;
@@ -681,20 +584,23 @@ h1{
   .step-pill{justify-content:flex-start;padding-left:16px}
 }
 @media(max-width:680px){
-  .shell{width:min(100% - 22px,1120px);padding-top:24px}
-  .hero-card,.side-card,.section-head,.content,.nav-actions{padding-left:22px;padding-right:22px}
-  .quick-grid,.reason-grid,.destinations,.action-grid,.dashboard-grid{grid-template-columns:1fr}
+  .shell{width:min(100% - 22px,1080px);padding-top:24px}
+  .hero-card,.section-head,.content,.nav-actions{padding-left:22px;padding-right:22px}
+  .quick-grid,.reason-grid,.destinations,.action-grid{grid-template-columns:1fr}
   h1{font-size:47px}
-  .hero-card,.side-card,.panel{border-radius:32px}
+  .hero-card,.panel{border-radius:32px}
+  .brand-row{align-items:flex-start;gap:14px}
+  .logo-orb{width:72px;height:72px}
+  .logo-orb svg{width:48px;height:48px}
 }
 @media print{
   body{background:#fff;color:#000}
   body:before,.progress-wrap,.nav-actions,.final-actions,.toast{display:none!important}
   .shell{width:100%;padding:0}
   .hero,.grid{display:block}
-  .hero-card,.side-card,.panel,.commitment,.summary-card{box-shadow:none;break-inside:avoid}
+  .hero-card,.panel,.commitment,.summary-card{box-shadow:none;break-inside:avoid}
   .step-section{display:block!important;break-inside:avoid;margin-top:18px}
-  .side-card,.commitment{background:#231815!important;color:#fff!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .commitment{background:#231815!important;color:#fff!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
 }
 </style>
 </head>
@@ -726,70 +632,69 @@ h1{
       </div>
       <h1>Mapa de <span class="gold-text">Redistribuição do Peso</span></h1>
       <p class="hero-copy">
-        Você vai escolher <strong>um peso real</strong> que começa a sair da sua mão nesta semana. Pequeno, possível e com prova visível.
+        Escolha <strong>um peso real</strong> que hoje está na sua mão e transforme isso em uma primeira ação possível para esta semana.
       </p>
     </div>
   </section>
 
   <nav class="progress-wrap" aria-label="Passos da ferramenta">
-    <button class="step-pill active" data-step="0"><span class="n">1</span> Peso</button>
-    <button class="step-pill" data-step="1"><span class="n">2</span> Origem</button>
-    <button class="step-pill" data-step="2"><span class="n">3</span> Destino</button>
-    <button class="step-pill" data-step="3"><span class="n">4</span> Ação</button>
-    <button class="step-pill" data-step="4"><span class="n">5</span> Prova</button>
+    <button class="step-pill active" type="button" data-step="0"><span class="n">1</span> Peso</button>
+    <button class="step-pill" type="button" data-step="1"><span class="n">2</span> Origem</button>
+    <button class="step-pill" type="button" data-step="2"><span class="n">3</span> Destino</button>
+    <button class="step-pill" type="button" data-step="3"><span class="n">4</span> Ação</button>
+    <button class="step-pill" type="button" data-step="4"><span class="n">5</span> Prova</button>
   </nav>
 
   <section class="grid">
     <main class="panel">
       <article class="step-section active" data-section="0">
         <div class="section-head">
-          <div class="eyebrow">Movimento 01</div>
-          <h2>Escolha um peso, não a empresa inteira.</h2>
-          <p>A primeira decisão precisa ser pequena o bastante para ser executada em uma semana e relevante o bastante para gerar alívio.</p>
+          <div class="eyebrow">Passo 01</div>
+          <h2>Qual peso mais aparece hoje?</h2>
+          <p>Escolha uma área e descreva esse peso do jeito que ele aparece na sua rotina.</p>
         </div>
         <div class="content">
-          <div class="callout"><strong>Regra de ouro:</strong> se ela tentar listar tudo, traga de volta para um peso principal. A ferramenta começa com foco, não com despejo mental.</div>
-          <label class="label">Qual área mais está drenando você hoje?</label>
+          <label class="label">Escolha uma área</label>
           <div class="quick-grid" id="quickGrid">
-            <button class="quick-btn" data-value="WhatsApp e mensagens"><span>WhatsApp</span><small>respostas, cobrança, retornos</small></button>
-            <button class="quick-btn" data-value="Agenda e horários"><span>Agenda</span><small>confirmações, encaixes, atrasos</small></button>
-            <button class="quick-btn" data-value="Equipe perguntando tudo"><span>Equipe</span><small>perguntas, dependência, ruídos</small></button>
-            <button class="quick-btn" data-value="Aprovações e decisões pequenas"><span>Aprovações</span><small>tudo passa por mim</small></button>
-            <button class="quick-btn" data-value="Conferência e retrabalho"><span>Conferência</span><small>preciso revisar tudo</small></button>
-            <button class="quick-btn" data-value="Cliente reclamando ou esperando"><span>Cliente</span><small>reclamação, espera, urgência</small></button>
-            <button class="quick-btn" data-value="Estoque, material ou bastidores"><span>Bastidores</span><small>material, compras, organização</small></button>
-            <button class="quick-btn" data-value="Redes sociais e conteúdo"><span>Redes sociais</span><small>postagem, aprovação, cobrança</small></button>
-            <button class="quick-btn" data-value="Outro peso recorrente"><span>Outro</span><small>algo específico da sua rotina</small></button>
+            <button type="button" class="quick-btn" data-value="WhatsApp e mensagens"><span>WhatsApp</span><small>respostas, cobrança, retornos</small></button>
+            <button type="button" class="quick-btn" data-value="Agenda e horários"><span>Agenda</span><small>confirmações, encaixes, atrasos</small></button>
+            <button type="button" class="quick-btn" data-value="Equipe perguntando tudo"><span>Equipe</span><small>perguntas, dependência, ruídos</small></button>
+            <button type="button" class="quick-btn" data-value="Aprovações e decisões pequenas"><span>Aprovações</span><small>tudo passa por mim</small></button>
+            <button type="button" class="quick-btn" data-value="Conferência e retrabalho"><span>Conferência</span><small>preciso revisar tudo</small></button>
+            <button type="button" class="quick-btn" data-value="Cliente reclamando ou esperando"><span>Cliente</span><small>reclamação, espera, urgência</small></button>
+            <button type="button" class="quick-btn" data-value="Estoque, material ou bastidores"><span>Bastidores</span><small>material, compras, organização</small></button>
+            <button type="button" class="quick-btn" data-value="Redes sociais e conteúdo"><span>Redes sociais</span><small>postagem, aprovação, cobrança</small></button>
+            <button type="button" class="quick-btn" data-value="Outro peso recorrente"><span>Outro</span><small>algo específico da sua rotina</small></button>
           </div>
           <div class="field">
-            <label class="label" for="pesoFrase">Descreva esse peso em uma frase concreta</label>
+            <label class="label" for="pesoFrase">Descreva em uma frase</label>
             <textarea class="textarea" id="pesoFrase" placeholder="Ex.: Eu preciso confirmar todos os clientes do dia seguinte porque tenho medo de a agenda desandar."></textarea>
-            <p class="help">Use uma frase do cotidiano. Nada de “preciso melhorar minha gestão”. Escreva onde o peso aparece.</p>
+            <p class="help">Escreva uma cena real da rotina. Quanto mais concreto, melhor.</p>
           </div>
         </div>
         <div class="nav-actions">
-          <button class="btn" disabled>Voltar</button>
-          <button class="btn primary" data-next>Continuar</button>
+          <button class="btn" type="button" disabled>Voltar</button>
+          <button class="btn primary" type="button" data-next>Continuar</button>
         </div>
       </article>
 
       <article class="step-section" data-section="1">
         <div class="section-head">
-          <div class="eyebrow">Movimento 02</div>
-          <h2>Descubra por que esse peso ficou com você.</h2>
-          <p>Antes de redistribuir, ela precisa ver a crença ou o hábito que sustenta a sobrecarga. Aqui a ferramenta deixa de ser operacional e vira transformação.</p>
+          <div class="eyebrow">Passo 02</div>
+          <h2>Por que esse peso ainda está com você?</h2>
+          <p>Marque as respostas que fazem sentido e complete a frase com honestidade.</p>
         </div>
         <div class="content">
-          <label class="label">Marque o que mais parece verdadeiro</label>
+          <label class="label">O que mais parece verdadeiro?</label>
           <div class="reason-grid" id="reasonGrid">
-            <button class="reason-btn" data-value="Porque eu faço mais rápido."><span>Faço mais rápido</span><small>ensinar parece custar mais do que fazer</small></button>
-            <button class="reason-btn" data-value="Porque não confio que outra pessoa fará bem."><span>Não confio</span><small>tenho medo de cair a qualidade</small></button>
-            <button class="reason-btn" data-value="Porque nunca ensinei o padrão."><span>Nunca ensinei</span><small>a regra está na minha cabeça</small></button>
-            <button class="reason-btn" data-value="Porque tenho medo de parecer exigente."><span>Medo de ser exigente</span><small>fujo do desconforto de cobrar</small></button>
-            <button class="reason-btn" data-value="Porque não quero sobrecarregar ninguém."><span>Sinto culpa</span><small>confundo delegar com jogar peso</small></button>
-            <button class="reason-btn" data-value="Porque se der errado, sobra para mim."><span>Sobra para mim</span><small>o risco final ainda parece meu</small></button>
-            <button class="reason-btn" data-value="Porque ninguém sabe que isso pesa."><span>Ninguém sabe</span><small>carrego em silêncio</small></button>
-            <button class="reason-btn" data-value="Porque virou hábito."><span>Virou hábito</span><small>sempre foi assim</small></button>
+            <button type="button" class="reason-btn" data-value="Porque eu faço mais rápido."><span>Faço mais rápido</span><small>ensinar parece custar mais</small></button>
+            <button type="button" class="reason-btn" data-value="Porque não confio que outra pessoa fará bem."><span>Não confio</span><small>tenho medo de cair a qualidade</small></button>
+            <button type="button" class="reason-btn" data-value="Porque nunca ensinei o padrão."><span>Nunca ensinei</span><small>a regra está na minha cabeça</small></button>
+            <button type="button" class="reason-btn" data-value="Porque tenho medo de parecer exigente."><span>Medo de ser exigente</span><small>evito o desconforto de cobrar</small></button>
+            <button type="button" class="reason-btn" data-value="Porque não quero sobrecarregar ninguém."><span>Sinto culpa</span><small>confundo delegar com jogar peso</small></button>
+            <button type="button" class="reason-btn" data-value="Porque se der errado, sobra para mim."><span>Sobra para mim</span><small>o risco final ainda parece meu</small></button>
+            <button type="button" class="reason-btn" data-value="Porque ninguém sabe que isso pesa."><span>Ninguém sabe</span><small>carrego em silêncio</small></button>
+            <button type="button" class="reason-btn" data-value="Porque virou hábito."><span>Virou hábito</span><small>sempre foi assim</small></button>
           </div>
           <div class="truth-box">
             <label class="label" for="verdade">A verdade que eu preciso admitir aqui é...</label>
@@ -797,66 +702,65 @@ h1{
           </div>
         </div>
         <div class="nav-actions">
-          <button class="btn" data-prev>Voltar</button>
-          <button class="btn primary" data-next>Continuar</button>
+          <button class="btn" type="button" data-prev>Voltar</button>
+          <button class="btn primary" type="button" data-next>Continuar</button>
         </div>
       </article>
 
       <article class="step-section" data-section="2">
         <div class="section-head">
-          <div class="eyebrow">Movimento 03</div>
-          <h2>Dê um destino para esse peso.</h2>
-          <p>Nem todo peso deve ser delegado. Alguns precisam virar processo. Alguns continuam com a dona. Outros precisam parar de ser alimentados.</p>
+          <div class="eyebrow">Passo 03</div>
+          <h2>Para onde esse peso precisa ir?</h2>
+          <p>Escolha o destino mais honesto para esse peso agora.</p>
         </div>
         <div class="content">
-          <label class="label">Escolha o destino mais honesto</label>
           <div class="destinations" id="destinations">
-            <button class="dest-card" data-dest="Continua comigo">
+            <button type="button" class="dest-card" data-dest="Continua comigo">
               <span class="dest-tag">Centro</span>
               <h3>Continua comigo</h3>
-              <p>Quando é decisão estratégica real da dona, não execução recorrente disfarçada de importância.</p>
+              <p>Quando é uma decisão que realmente precisa ficar com a dona.</p>
             </button>
-            <button class="dest-card" data-dest="Vira processo">
+            <button type="button" class="dest-card" data-dest="Vira processo">
               <span class="dest-tag">Estrutura</span>
               <h3>Vira processo</h3>
-              <p>Quando se repete, precisa de padrão mínimo, checklist, horário, modelo ou regra clara.</p>
+              <p>Quando se repete e precisa de padrão, checklist, modelo ou regra.</p>
             </button>
-            <button class="dest-card" data-dest="Sai para alguém">
+            <button type="button" class="dest-card" data-dest="Sai para alguém">
               <span class="dest-tag">Leveza</span>
               <h3>Sai para alguém</h3>
-              <p>Quando uma parte pode ser assumida por outra pessoa, com limite e acompanhamento.</p>
+              <p>Quando uma parte pode ser assumida por outra pessoa.</p>
             </button>
-            <button class="dest-card" data-dest="Precisa parar ou reduzir">
+            <button type="button" class="dest-card" data-dest="Precisa parar ou reduzir">
               <span class="dest-tag">Corte</span>
               <h3>Precisa parar</h3>
-              <p>Quando é retrabalho, controle desnecessário, checagem duplicada ou hábito que não sustenta.</p>
+              <p>Quando é retrabalho, controle desnecessário ou hábito que não sustenta.</p>
             </button>
           </div>
           <div class="bisturi-alert" id="bisturiAlert">
-            <strong>Pergunta bisturi:</strong> isso é decisão estratégica ou execução recorrente presa na sua mão? Se for execução recorrente, talvez não precise continuar com você. Talvez precise de processo, pessoa ou limite.
+            <strong>Antes de continuar:</strong> isso é uma decisão estratégica ou uma execução recorrente que ficou presa na sua mão?
           </div>
         </div>
         <div class="nav-actions">
-          <button class="btn" data-prev>Voltar</button>
-          <button class="btn primary" data-next>Continuar</button>
+          <button class="btn" type="button" data-prev>Voltar</button>
+          <button class="btn primary" type="button" data-next>Continuar</button>
         </div>
       </article>
 
       <article class="step-section" data-section="3">
         <div class="section-head">
-          <div class="eyebrow">Movimento 04</div>
-          <h2>Desenhe a primeira ação sem virar caos.</h2>
-          <p>Aqui o peso começa a sair da cabeça e vira combinado. Pequeno, claro e verificável.</p>
+          <div class="eyebrow">Passo 04</div>
+          <h2>Como isso começa a sair de você?</h2>
+          <p>Transforme o destino escolhido em uma ação pequena e possível.</p>
         </div>
         <div class="content">
           <div class="checklist">
-            <label class="check-item"><input type="checkbox" class="validCheck"> É pequeno o bastante para começar esta semana.</label>
-            <label class="check-item"><input type="checkbox" class="validCheck"> Acontece com frequência ou aliviaria algo recorrente.</label>
-            <label class="check-item"><input type="checkbox" class="validCheck"> Dá para explicar em até 10 minutos.</label>
-            <label class="check-item"><input type="checkbox" class="validCheck"> Tem baixo risco se for ajustado aos poucos.</label>
-            <label class="check-item"><input type="checkbox" class="validCheck"> Dá para trazer uma prova na próxima semana.</label>
+            <label class="check-item"><input type="checkbox" class="validCheck"> Consigo começar esta semana.</label>
+            <label class="check-item"><input type="checkbox" class="validCheck"> Isso acontece com frequência ou me daria alívio.</label>
+            <label class="check-item"><input type="checkbox" class="validCheck"> Dá para explicar de forma simples.</label>
+            <label class="check-item"><input type="checkbox" class="validCheck"> O risco é baixo ou controlável.</label>
+            <label class="check-item"><input type="checkbox" class="validCheck"> Consigo trazer uma prova no próximo encontro.</label>
           </div>
-          <div class="callout" id="sizeWarning"><strong>Filtro de segurança:</strong> se marcar menos de 4 itens, esse peso provavelmente está grande demais. Escolha uma parte menor.</div>
+          <div class="callout" id="sizeWarning"><strong>Observe:</strong> se a ação parecer grande demais, escolha só uma parte dela.</div>
           <div class="action-grid">
             <div class="field">
               <label class="label" for="acaoOque">O que será feito?</label>
@@ -871,67 +775,56 @@ h1{
               <input class="input" id="acaoPadrao" placeholder="Ex.: mensagem enviada até 16h e lista preenchida">
             </div>
             <div class="field">
-              <label class="label" for="acaoConferir">Como vou conferir sem pegar de volta?</label>
+              <label class="label" for="acaoConferir">Como vou acompanhar?</label>
               <input class="input" id="acaoConferir" placeholder="Ex.: olhar lista no fim do dia">
             </div>
           </div>
         </div>
         <div class="nav-actions">
-          <button class="btn" data-prev>Voltar</button>
-          <button class="btn primary" data-next>Continuar</button>
+          <button class="btn" type="button" data-prev>Voltar</button>
+          <button class="btn primary" type="button" data-next>Continuar</button>
         </div>
       </article>
 
       <article class="step-section" data-section="4">
         <div class="section-head">
-          <div class="eyebrow">Movimento 05</div>
-          <h2>Feche com prova, não com promessa.</h2>
-          <p>A semana precisa terminar com uma evidência. A aluna volta para o próximo encontro com rastro, não com desculpa.</p>
+          <div class="eyebrow">Passo 05</div>
+          <h2>Qual prova você vai trazer?</h2>
+          <p>Finalize com uma evidência simples do que começou a mudar.</p>
         </div>
         <div class="content">
           <div class="commitment">
             <h3>Minha primeira saída de peso</h3>
-            <textarea id="compromisso" placeholder="Nesta semana, eu vou começar a tirar da minha mão... criando... com... e vou trazer como prova..."></textarea>
+            <textarea id="compromisso" placeholder="Nesta semana, eu vou começar a tirar da minha mão..."></textarea>
             <div class="final-actions">
-              <button class="btn" id="generateCommit">Gerar frase com o que preenchi</button>
-              <button class="btn" id="copyCommit">Copiar compromisso</button>
+              <button class="btn" type="button" id="generateCommit">Gerar frase com o que preenchi</button>
+              <button class="btn" type="button" id="copyCommit">Copiar compromisso</button>
             </div>
           </div>
           <div class="field">
-            <label class="label" for="prova">Qual prova vou trazer na próxima semana?</label>
+            <label class="label" for="prova">Minha prova será</label>
             <input class="input" id="prova" placeholder="Ex.: print do combinado, foto do checklist, lista preenchida, relato da conversa">
           </div>
           <div class="field">
-            <label class="label" for="sabotagem">Quando meu padrão antigo tentar voltar, eu vou...</label>
+            <label class="label" for="sabotagem">Se meu padrão antigo tentar voltar, eu vou...</label>
             <textarea class="textarea" id="sabotagem" placeholder="Ex.: Se eu pensar que é mais rápido fazer sozinha, vou lembrar que rápido hoje pode ser prisão amanhã."></textarea>
           </div>
           <div class="summary-card">
-            <h3>Resumo da minha decisão</h3>
+            <h3>Meu resumo</h3>
             <div class="summary-row"><div class="summary-label">Peso escolhido</div><div class="summary-value" id="sumPeso">Ainda não preenchido.</div></div>
             <div class="summary-row"><div class="summary-label">Por que ficou comigo</div><div class="summary-value" id="sumOrigem">Ainda não preenchido.</div></div>
             <div class="summary-row"><div class="summary-label">Destino</div><div class="summary-value" id="sumDestino">Ainda não preenchido.</div></div>
             <div class="summary-row"><div class="summary-label">Primeira ação</div><div class="summary-value" id="sumAcao">Ainda não preenchido.</div></div>
             <div class="summary-row"><div class="summary-label">Prova</div><div class="summary-value" id="sumProva">Ainda não preenchido.</div></div>
           </div>
-
-          <div class="dashboard-note">
-            <strong>O que a Mel vai enxergar no acompanhamento:</strong> suas respostas viram um mapa simples de condução, com o peso principal, a crença que sustenta esse peso, o destino escolhido, o risco de sabotagem e a prova combinada para a semana.
-            <div class="dashboard-grid">
-              <div class="dash-tile"><div class="dash-label">Tema dominante</div><div class="dash-value" id="dashTema">Ainda não preenchido.</div></div>
-              <div class="dash-tile"><div class="dash-label">Risco da semana</div><div class="dash-value"><span class="risk-pill" id="dashRisco">Aguardando</span></div></div>
-              <div class="dash-tile"><div class="dash-label">Intervenção sugerida</div><div class="dash-value" id="dashIntervencao">Ainda não preenchido.</div></div>
-              <div class="dash-tile"><div class="dash-label">Prova esperada</div><div class="dash-value" id="dashProva">Ainda não preenchido.</div></div>
-            </div>
-          </div>
-
           <div class="final-actions">
-            <button class="btn primary" onclick="window.print()">Salvar ou imprimir</button>
-            <button class="btn" id="resetAll">Começar de novo</button>
+            <button class="btn primary" type="button" onclick="window.print()">Salvar ou imprimir</button>
+            <button class="btn" type="button" id="resetAll">Começar de novo</button>
           </div>
         </div>
         <div class="nav-actions">
-          <button class="btn" data-prev>Voltar</button>
-          <button class="btn primary" onclick="window.print()">Finalizar</button>
+          <button class="btn" type="button" data-prev>Voltar</button>
+          <button class="btn primary" type="button" onclick="window.print()">Finalizar</button>
         </div>
       </article>
     </main>
@@ -940,6 +833,7 @@ h1{
 <div class="toast" id="toast">Copiado.</div>
 <script>
 (function(){
+  'use strict';
   const state = {
     step:0,
     area:'',
@@ -955,44 +849,55 @@ h1{
     sabotagem:'',
     compromisso:''
   };
-  const $ = s => document.querySelector(s);
-  const $$ = s => Array.from(document.querySelectorAll(s));
-  const val = id => (document.getElementById(id)?.value || '').trim();
-  const set = (id, text) => { const el = document.getElementById(id); if(el) el.textContent = text || 'Ainda não preenchido.'; };
-  function showToast(text='Copiado.'){
-    const t = $('#toast');
-    t.textContent = text;
-    t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),1700);
+  const $ = selector => document.querySelector(selector);
+  const $$ = selector => Array.from(document.querySelectorAll(selector));
+  const getValue = id => {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  };
+  const setText = (id, text) => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = text || 'Ainda não preenchido.';
+  };
+  function showToast(text){
+    const toast = $('#toast');
+    if(!toast) return;
+    toast.textContent = text || 'Copiado.';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 1700);
   }
-  function updateMentor(){}
-  function go(step){
-    state.step = Math.max(0,Math.min(4,step));
-    $$('.step-section').forEach((s,i)=>s.classList.toggle('active',i===state.step));
-    $$('.step-pill').forEach((p,i)=>{
-      p.classList.toggle('active',i===state.step);
-      p.classList.toggle('done',i<state.step);
+  function goToStep(step){
+    const safeStep = Math.max(0, Math.min(4, step));
+    state.step = safeStep;
+    $$('.step-section').forEach((section, index) => {
+      section.classList.toggle('active', index === safeStep);
     });
-    window.scrollTo({top:220,behavior:'smooth'});
+    $$('.step-pill').forEach((pill, index) => {
+      pill.classList.toggle('active', index === safeStep);
+      pill.classList.toggle('done', index < safeStep);
+    });
+    const progress = $('.progress-wrap');
+    const top = progress ? progress.offsetTop - 18 : 0;
+    window.scrollTo({top, behavior:'smooth'});
   }
   function readState(){
-    state.peso = val('pesoFrase');
-    state.verdade = val('verdade');
-    state.acaoOque = val('acaoOque');
-    state.acaoQuem = val('acaoQuem');
-    state.acaoPadrao = val('acaoPadrao');
-    state.acaoConferir = val('acaoConferir');
-    state.prova = val('prova');
-    state.sabotagem = val('sabotagem');
-    state.compromisso = val('compromisso');
+    state.peso = getValue('pesoFrase');
+    state.verdade = getValue('verdade');
+    state.acaoOque = getValue('acaoOque');
+    state.acaoQuem = getValue('acaoQuem');
+    state.acaoPadrao = getValue('acaoPadrao');
+    state.acaoConferir = getValue('acaoConferir');
+    state.prova = getValue('prova');
+    state.sabotagem = getValue('sabotagem');
+    state.compromisso = getValue('compromisso');
   }
   function inferRisk(){
     const reasons = state.reasons.join(' ').toLowerCase();
-    const sab = state.sabotagem.toLowerCase();
+    const sabotage = state.sabotagem.toLowerCase();
     if(reasons.includes('culpa') || reasons.includes('sobrecarregar')) return 'Culpa';
-    if(reasons.includes('confio') || reasons.includes('erro') || sab.includes('errar')) return 'Medo de erro';
-    if(reasons.includes('rápido') || reasons.includes('mais rápido')) return 'Atalho';
-    if(reasons.includes('padrão') || state.destino === 'Vira processo') return 'Falta de padrão';
+    if(reasons.includes('confio') || reasons.includes('erro') || sabotage.includes('errar')) return 'Medo de erro';
+    if(reasons.includes('rápido') || reasons.includes('rapido')) return 'Atalho';
+    if(reasons.includes('padrão') || reasons.includes('padrao') || state.destino === 'Vira processo') return 'Falta de padrão';
     if(reasons.includes('exigente')) return 'Medo de cobrar';
     if(state.destino === 'Continua comigo') return 'Centralização';
     return 'Acompanhar';
@@ -1007,21 +912,22 @@ h1{
       'Centralização':'Separar decisão estratégica de execução recorrente.',
       'Acompanhar':'Pedir prova pequena e revisar no próximo encontro.'
     };
-    return map[risk] || map['Acompanhar'];
+    return map[risk] || map.Acompanhar;
   }
   function updateSummary(){
     readState();
-    set('sumPeso', state.peso || state.area);
-    set('sumOrigem', state.reasons.join(' · ') || state.verdade);
-    set('sumDestino', state.destino);
-    const action = [state.acaoOque, state.acaoQuem && `com ${state.acaoQuem}`, state.acaoPadrao && `padrão: ${state.acaoPadrao}`, state.acaoConferir && `conferência: ${state.acaoConferir}`].filter(Boolean).join(' | ');
-    set('sumAcao', action);
-    set('sumProva', state.prova);
+    const action = [
+      state.acaoOque,
+      state.acaoQuem ? `com ${state.acaoQuem}` : '',
+      state.acaoPadrao ? `padrão: ${state.acaoPadrao}` : '',
+      state.acaoConferir ? `acompanhamento: ${state.acaoConferir}` : ''
+    ].filter(Boolean).join(' | ');
+    setText('sumPeso', state.peso || state.area);
+    setText('sumOrigem', state.reasons.join(' · ') || state.verdade);
+    setText('sumDestino', state.destino);
+    setText('sumAcao', action);
+    setText('sumProva', state.prova);
     const risk = inferRisk();
-    set('dashTema', state.area || state.peso);
-    set('dashRisco', risk);
-    set('dashIntervencao', inferIntervention(risk));
-    set('dashProva', state.prova || 'Prova ainda não definida.');
     window.eloDashboardPayload = {
       ferramenta:'Mapa de Redistribuição do Peso',
       peso_area: state.area,
@@ -1033,57 +939,126 @@ h1{
         o_que: state.acaoOque,
         quem: state.acaoQuem,
         padrao_minimo: state.acaoPadrao,
-        conferencia: state.acaoConferir
+        acompanhamento: state.acaoConferir
       },
       prova_esperada: state.prova,
       plano_anti_sabotagem: state.sabotagem,
       risco_inferido: risk,
       intervencao_sugerida: inferIntervention(risk),
+      compromisso: state.compromisso,
       atualizado_em: new Date().toISOString()
     };
   }
-  $$('.step-pill').forEach(b=>b.addEventListener('click',()=>go(+b.dataset.step)));
-  $$('[data-next]').forEach(b=>b.addEventListener('click',()=>{readState();updateSummary();go(state.step+1)}));
-  $$('[data-prev]').forEach(b=>b.addEventListener('click',()=>{readState();updateSummary();go(state.step-1)}));
-  $$('.quick-btn').forEach(b=>b.addEventListener('click',()=>{
-    $$('.quick-btn').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    state.area = b.dataset.value;
-    const peso = $('#pesoFrase');
-    if(!peso.value.trim()) peso.value = `O peso que mais me prende hoje está em: ${state.area}.`;
-    updateSummary();
-  }));
-  $$('.reason-btn').forEach(b=>b.addEventListener('click',()=>{
-    b.classList.toggle('on');
-    const v = b.dataset.value;
-    if(b.classList.contains('on')){
-      if(!state.reasons.includes(v)) state.reasons.push(v);
-    }else{
-      state.reasons = state.reasons.filter(x=>x!==v);
-    }
-    const verdade = $('#verdade');
-    if(!verdade.value.trim() && state.reasons.length){
-      verdade.value = `A verdade que eu preciso admitir é: ${state.reasons[0].toLowerCase()}`;
-    }
-    updateSummary();
-  }));
-  $$('.dest-card').forEach(b=>b.addEventListener('click',()=>{
-    $$('.dest-card').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    state.destino = b.dataset.dest;
-    $('#bisturiAlert').classList.toggle('show', state.destino === 'Continua comigo');
-    updateSummary();
-  }));
-  $$('.validCheck').forEach(c=>c.addEventListener('change',()=>{
-    const count = $$('.validCheck').filter(x=>x.checked).length;
-    const warn = $('#sizeWarning');
-    if(count >= 4){
-      warn.innerHTML = '<strong>Bom sinal:</strong> essa ação parece pequena e executável para esta semana.';
-    }else{
-      warn.innerHTML = '<strong>Filtro de segurança:</strong> se marcar menos de 4 itens, esse peso provavelmente está grande demais. Escolha uma parte menor.';
-    }
-  }));
-  ['pesoFrase','verdade','acaoOque','acaoQuem','acaoPadrao','acaoConferir','prova','sabotagem','compromisso'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) el.addEventListener('input',updateSummary);
+  $$('.step-pill').forEach(button => {
+    button.addEventListener('click', () => {
+      updateSummary();
+      goToStep(Number(button.dataset.step));
+    });
   });
+  $$('[data-next]').forEach(button => {
+    button.addEventListener('click', () => {
+      updateSummary();
+      goToStep(state.step + 1);
+    });
+  });
+  $$('[data-prev]').forEach(button => {
+    button.addEventListener('click', () => {
+      updateSummary();
+      goToStep(state.step - 1);
+    });
+  });
+  $$('.quick-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      $$('.quick-btn').forEach(item => item.classList.remove('on'));
+      button.classList.add('on');
+      state.area = button.dataset.value || '';
+      const field = $('#pesoFrase');
+      if(field && !field.value.trim()) field.value = `O peso que mais aparece hoje está em: ${state.area}.`;
+      updateSummary();
+    });
+  });
+  $$('.reason-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      button.classList.toggle('on');
+      const value = button.dataset.value || '';
+      if(button.classList.contains('on')){
+        if(!state.reasons.includes(value)) state.reasons.push(value);
+      }else{
+        state.reasons = state.reasons.filter(item => item !== value);
+      }
+      const truth = $('#verdade');
+      if(truth && !truth.value.trim() && state.reasons.length){
+        truth.value = `A verdade que eu preciso admitir é: ${state.reasons[0].toLowerCase()}`;
+      }
+      updateSummary();
+    });
+  });
+  $$('.dest-card').forEach(button => {
+    button.addEventListener('click', () => {
+      $$('.dest-card').forEach(item => item.classList.remove('on'));
+      button.classList.add('on');
+      state.destino = button.dataset.dest || '';
+      const alert = $('#bisturiAlert');
+      if(alert) alert.classList.toggle('show', state.destino === 'Continua comigo');
+      updateSummary();
+    });
+  });
+  $$('.validCheck').forEach(check => {
+    check.addEventListener('change', () => {
+      const count = $$('.validCheck').filter(item => item.checked).length;
+      const warning = $('#sizeWarning');
+      if(!warning) return;
+      if(count >= 4){
+        warning.innerHTML = '<strong>Bom sinal:</strong> essa ação parece executável para esta semana.';
+      }else{
+        warning.innerHTML = '<strong>Observe:</strong> se a ação parecer grande demais, escolha só uma parte dela.';
+      }
+    });
+  });
+  ['pesoFrase','verdade','acaoOque','acaoQuem','acaoPadrao','acaoConferir','prova','sabotagem','compromisso'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', updateSummary);
+  });
+  const generate = $('#generateCommit');
+  if(generate){
+    generate.addEventListener('click', () => {
+      updateSummary();
+      const peso = state.acaoOque || state.peso || state.area || 'um peso recorrente';
+      const padrao = state.acaoPadrao || 'um padrão mínimo';
+      const quem = state.acaoQuem || 'a pessoa certa';
+      const prova = state.prova || 'uma prova simples';
+      const phrase = `Nesta semana, eu vou começar a tirar da minha mão ${peso}, criando ${padrao}, com ${quem}, e vou trazer como prova ${prova}.`;
+      const compromisso = $('#compromisso');
+      if(compromisso) compromisso.value = phrase;
+      updateSummary();
+    });
+  }
+  const copy = $('#copyCommit');
+  if(copy){
+    copy.addEventListener('click', async () => {
+      updateSummary();
+      const text = state.compromisso || getValue('compromisso');
+      if(!text){ showToast('Escreva ou gere o compromisso primeiro.'); return; }
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast('Compromisso copiado.');
+      }catch(error){
+        showToast('Não foi possível copiar.');
+      }
+    });
+  }
+  const reset = $('#resetAll');
+  if(reset){
+    reset.addEventListener('click', () => {
+      if(confirm('Apagar tudo e começar de novo?')) window.location.reload();
+    });
+  }
+  window.getEloDashboardPayload = () => {
+    updateSummary();
+    return window.eloDashboardPayload;
+  };
+  updateSummary();
+})();
+</script>
+</body>
+</html>
